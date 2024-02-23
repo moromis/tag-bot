@@ -31,3 +31,7 @@ Some things I'd like to do in the future with this.
 
 - Move to a real database
 - Move to TypeScript
+- Add tests
+  - Add unit tests
+  - Add integration tests
+  - Add test coverage/test coverage badge
