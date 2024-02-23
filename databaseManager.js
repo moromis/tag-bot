@@ -132,6 +132,12 @@ const database = () => {
       return `${displayName}:\n\tPoints: ${points}\n\tBest Streak: ${bestStreak} ${bestStreakDaysString}\n\tTotal Time Survived: ${totalSurvivalTime} ${totalSurvivalTimeDaysString}`;
     });
   };
+  const checkIfTagged = (user) => {
+    if (user in users) {
+      return users[user].isTagged;
+    }
+    return false; // can't be tagged if you don't exist
+  };
   const getScore = (user) => {
     if (user in users) {
       return users[user].bestStreak;
@@ -193,9 +199,11 @@ const database = () => {
     );
   };
   const getCurrentlyTagged = () => {
-    return Object.values(users).find((user) => {
-      return user.isTagged;
-    })?.displayName;
+    return (
+      Object.values(users).find((user) => {
+        return user.isTagged;
+      })?.displayName || null
+    );
   };
   return {
     addUser,
@@ -211,6 +219,7 @@ const database = () => {
     getAllTotalStreaks,
     getScoreboard,
     getCurrentlyTagged,
+    checkIfTagged,
   };
 };
 
