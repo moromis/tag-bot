@@ -21,9 +21,10 @@ module.exports = {
       if (tagged) {
         // there does exist in the current game someone that has been tagged
         if (tagged !== interaction.user.displayName) {
-          await interaction.reply(
-            `You can't tag someone if you're not currently tagged. Check who's tagged with \`\\whos-tagged\` and tell them to go get 'em.`,
-          );
+          await interaction.reply({
+            content: `You can't tag someone if you're not currently tagged. Check who's tagged with \`\\whos-tagged\` and tell them to go get 'em.`,
+            ephemeral: true,
+          });
         } else {
           db.tagUser(target, interaction.user);
           await interaction.reply(`${target}, you just got tagged!`);
