@@ -14,7 +14,10 @@ module.exports = {
         "No one's playing yet. Use /register to add yourself to the game, or tag someone and then use /tag <username> to record it!",
       );
     } else {
-      await interaction.reply(`## Scoreboard\n${scoreboard.join("\n")}`);
+      await interaction.reply({
+        content: `## Scoreboard\n${scoreboard.join("\n")}`,
+        ephemeral: true,
+      });
     }
   },
 };

@@ -8,10 +8,11 @@ module.exports = {
   async execute(interaction) {
     const db = getDatabase();
     const tagged = db.getCurrentlyTagged();
-    await interaction.reply(
-      tagged
+    await interaction.reply({
+      content: tagged
         ? `${tagged} is currently tagged right now.`
         : "No one is tagged yet. Someone get someone!",
-    );
+      ephemeral: true,
+    });
   },
 };
