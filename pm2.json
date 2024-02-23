@@ -1,0 +1,18 @@
+{
+  "script": "yarn start",
+  "watch": true,
+  "ignore_watch": [
+    "node_modules",
+    "db.json",
+    ".github",
+    ".git",
+    ".husky",
+    ".eslintrc.json",
+    "pm2.json",
+    "*.md"
+  ],
+  "watch_options": {
+    "followSymlinks": false
+  },
+  "name": "TagBot"
+}

@@ -19,7 +19,8 @@
   },
   "scripts": {
     "prepare": "husky",
-    "dev": "nodemon --ignore db.json --exec node ."
+    "dev": "pm2 start pm2.json",
+    "start": "node ."
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
