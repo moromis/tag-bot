@@ -65,7 +65,7 @@ const database = () => {
 
   const tagUser = (userToTag, tagger) => {
     // first, add a point for the tagger
-    const _tagger = getOrCreateUser(tagger, 1);
+    const _tagger = getOrCreateUser(tagger);
     const toTag = getOrCreateUser(userToTag, 0, true);
 
     _tagger.points += 1;
