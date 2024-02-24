@@ -136,14 +136,13 @@ const database = () => {
     return Object.keys(users).map((id) => {
       const { points, displayName, lastTagged, isTagged } = users[id];
       const bounty = _calculateBounty(lastTagged, isTagged);
-      const displayPoints = points + bounty;
       const bestStreak = updateBestStreak(id);
       const totalSurvivalTime = updateTotalSurvivalTime(id);
       const bestStreakDaysString = bestStreak == 1 ? "day" : "days";
       const totalSurvivalTimeDaysString =
         totalSurvivalTime == 1 ? "day" : "days";
       const currentBountyBlurb = isTagged ? "Tagger" : `Bounty: ${bounty}`;
-      return `${displayName}:\n\tPoints: ${displayPoints}\n\tBest Streak: ${bestStreak} ${bestStreakDaysString}\n\tTotal Time Survived: ${totalSurvivalTime} ${totalSurvivalTimeDaysString}\n\t${currentBountyBlurb}`;
+      return `${displayName}:\n\tPoints: ${points}\n\tBest Streak: ${bestStreak} ${bestStreakDaysString}\n\tTotal Time Survived: ${totalSurvivalTime} ${totalSurvivalTimeDaysString}\n\t${currentBountyBlurb}`;
     });
   };
   const checkIfTagged = (user) => {
