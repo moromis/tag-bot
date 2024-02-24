@@ -68,7 +68,9 @@ const database = () => {
     const _tagger = getOrCreateUser(tagger);
     const toTag = getOrCreateUser(userToTag, 0, true);
 
-    _tagger.points += 1;
+    const bounty = _calculateBounty(toTag.lastTagged);
+
+    _tagger.points += bounty;
     if (_tagger.isTagged) {
       _tagger.isTagged = false;
     }
@@ -76,16 +78,25 @@ const database = () => {
     // next, reset the tagged user's streak
     const taggedTime = dayjs();
     const streak = taggedTime.diff(toTag.lastTagged, "day");
+    const newPoints = toTag.points + bounty;
     users[userToTag.id] = {
       ...toTag,
       lastTagged: dayjs(),
       isTagged: true,
+      points: newPoints,
       ...{
         bestStreak: streak > toTag.bestStreak ? streak : toTag.bestStreak,
       },
       totalSurvivalTime: toTag.totalSurvivalTime + streak,
     };
     exportDb();
+  };
+  const _calculateBounty = (lastTagged, isTagged = false) => {
+    if (isTagged) {
+      return 0;
+    }
+    const now = dayjs();
+    return Math.ceil(now.diff(lastTagged, "day", true) * 100);
   };
   const getUsers = () => {
     return Object.keys(users);
@@ -123,13 +134,16 @@ const database = () => {
   };
   const getScoreboard = () => {
     return Object.keys(users).map((id) => {
-      const { points, displayName } = users[id];
+      const { points, displayName, lastTagged, isTagged } = users[id];
+      const bounty = _calculateBounty(lastTagged, isTagged);
+      const displayPoints = points + bounty;
       const bestStreak = updateBestStreak(id);
       const totalSurvivalTime = updateTotalSurvivalTime(id);
       const bestStreakDaysString = bestStreak == 1 ? "day" : "days";
       const totalSurvivalTimeDaysString =
         totalSurvivalTime == 1 ? "day" : "days";
-      return `${displayName}:\n\tPoints: ${points}\n\tBest Streak: ${bestStreak} ${bestStreakDaysString}\n\tTotal Time Survived: ${totalSurvivalTime} ${totalSurvivalTimeDaysString}`;
+      const currentBountyBlurb = isTagged ? "Tagger" : `Bounty: ${bounty}`;
+      return `${displayName}:\n\tPoints: ${displayPoints}\n\tBest Streak: ${bestStreak} ${bestStreakDaysString}\n\tTotal Time Survived: ${totalSurvivalTime} ${totalSurvivalTimeDaysString}\n\t${currentBountyBlurb}`;
     });
   };
   const checkIfTagged = (user) => {
