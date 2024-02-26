@@ -16,7 +16,7 @@ const getDatabase = () => {
   return databaseInstance;
 };
 
-const createNewUser = (user, points = 0, isTagged = false) => {
+const _createNewUser = (user, points = 0, isTagged = false) => {
   users[user.id] = {
     username: user.username,
     displayName: user.displayName,
@@ -32,7 +32,7 @@ const createNewUser = (user, points = 0, isTagged = false) => {
 
 const getOrCreateUser = (user, points = 0, isTagged = false) => {
   if (!(user.id in users)) {
-    createNewUser(user, points, isTagged);
+    _createNewUser(user, points, isTagged);
   }
   return users[user.id];
 };
