@@ -6,6 +6,8 @@ let databaseExists = false;
 let databaseInstance = null;
 let users = {};
 
+const DB_FILE_NAME = "db.json";
+
 const getDatabase = () => {
   if (!databaseExists) {
     databaseInstance = database();
@@ -36,8 +38,8 @@ const getOrCreateUser = (user, points = 0, isTagged = false) => {
 };
 
 const importDb = () => {
-  if (fs.existsSync("./db.json")) {
-    const dehydratedUsers = require("./db.json");
+  if (fs.existsSync(`./${DB_FILE_NAME}`)) {
+    const dehydratedUsers = require(`./${DB_FILE_NAME}`);
     Object.entries(dehydratedUsers).map(([id, user]) => {
       users[id] = {
         ...user,
@@ -50,7 +52,7 @@ const importDb = () => {
 
 // TODO: do this on a second thread so it doesn't slow stuff down?
 const exportDb = () => {
-  fs.writeFile("db.json", JSON.stringify(users), function (err) {
+  fs.writeFile(`./${DB_FILE_NAME}`, JSON.stringify(users), function (err) {
     if (err) throw err;
   });
 };
